@@ -42,7 +42,11 @@ class Borrower
   end
 end
 
+# Public: creates a new book entry to the library class and
+# passes the book arguments (title & author) to the new item. 
 class Book
   def initialize(title, author)
+    @title = title
+    @author = author
   end
 end
