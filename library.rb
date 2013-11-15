@@ -1,3 +1,5 @@
+# 
+# 
 class Library
   def initialize
     @books = []
@@ -25,8 +27,11 @@ class Library
   end
 end
 
+# Public: creates instances of the Borrower class and
+# creats a unique name variable for each borrower
 class Borrower
   def initialize(name)
+    @name = name
   end
 
   def borrowed_books
