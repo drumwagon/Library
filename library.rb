@@ -1,4 +1,6 @@
 class Library
+
+  attr_accessor :borrower, :book, :status, :borrowed_books_count
   def initialize
     @books = []
   end
@@ -28,7 +30,7 @@ class Library
   def borrowed_books
     @books.each do |book|
       if book.status == "Checked out"
-        puts book.title + " is currently checked out."
+        puts book.title + " is currently checked out to " book.borrower "."
       end
     end
   end
@@ -37,7 +39,7 @@ class Library
 # show it as available if it is not checked out
   def available_books
     @books.each do |book|
-      if book.status == "Available"
+      if book.status != "Checked out"
         puts book.title + " is available to check out."
       end
     end
@@ -46,19 +48,18 @@ class Library
 
 # Public: Assigns a book in the library to a user and changes it's statys to checked 
   def check_out(borrower, book)
-    # @books.each do |book|
-      if  (book.status != "Checked out") # (borrower.borrowed_books.size < 2) &&&& name.standing != "Bad"
-        # borrower.borrowed_books = borrower.borrowed_books + 1
+      if borrower.borrowed_books.size == 2
+        puts "Sorry, you cannot check out any more books"
+      elsif (book.status == "Checked out")  
+        puts "Sorry, that book is not available."
+      else
+        borrower.borrowed_books_count = borrower.borrowed_books_count + 1
         book.status = "Checked out"
-        # borrower.borrowed_books << borrowed_books
-      #   book.owner = borrower
-      # elsif name.borrowed_books.size == 2
-      #   puts "Sorry, you cannot check out any more books"
-      # else
-      #   return "Sorry, that book is not available."
-      # end
-    end
-    puts borrower.name + " has checked out " + book.title + "."
+        borrower.borrowed_books << book
+        # book.owner = borrower
+        puts borrower.name + " has checked out " + book.title + "."
+        return borrower
+      end
   end
 
 # Public: Removes a book from current user and returns it to available in the library
@@ -70,24 +71,25 @@ end
 # Public: creates instances of the Borrower class and
 # creats a unique name variable for each borrower
 class Borrower
+  attr_accessor :borrowed_books_count
   def initialize(name)
     @name = name
-    @books = []
-    # puts @name + " has been created."
+    @borrowed_books = []
+    @borrowed_books_count = 0
   end
 
 # Identifies books that are currently checked out to a specific user.
   def borrowed_books
-    @borrowed_books = 0
+    @borrowed_books
   end
 
   def name
     @name
   end
 
-# Defines the number of books checked out
+# Defines the number of books checked out per borrower
   def borrowed_books_count
-
+    @borrowed_books_count
   end
 
   def borrowed_books_list
@@ -98,38 +100,11 @@ end
 # Public: creates a new book entry to the library class and
 # passes the book arguments (title & author) to the new item. 
 class Book
+  attr_accessor :status, :borrower, :title, :author
   def initialize(title, author)
     @title = title
     @author = author
     @status = "available"
     @borrower = nil
   end
-
-  def title
-    @title
-  end
-
-  def title
-    @title = title
-  end
-
-  def author
-    @author
-  end
-
-  def status
-    @status = "Available"
-  end
-
-  # def status=(new_value)
-  #   @status = new_value
-  # end
-
-  def borrower
-    @borrower = borrower
-  end
-
-  # def borrower(new_value)
-  #   @borrower = new_value
-  # end
 end
