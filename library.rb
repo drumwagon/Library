@@ -31,7 +31,8 @@ class Library
   def borrowed_books
     @books.each do |book|
       if book.status == "Checked out"
-        puts book.title + " is currently checked out to " # + name.borrower + "."
+        puts book.title + " is currently checked out." 
+        puts "Go talk to " + book.borrower.name + "."
       end
     end
   end
@@ -50,14 +51,14 @@ class Library
 # Public: Assigns a book in the library to a user and changes it's status to checked  out
   def check_out(borrower, book)
       if borrower.borrowed_books.size == 2
-        puts "Sorry, " + borrower.name + ", you cannot check out any more books"
+        puts "Sorry, " + borrower.name + ", you cannot check out any more books until you return one."
       elsif (book.status == "Checked out")  
         puts "Sorry, " + borrower.name + ", that book is not available."
       else
         borrower.borrowed_books_count = borrower.borrowed_books_count + 1
         book.status = "Checked out"
         borrower.borrowed_books << book
-        # book.owner = borrower
+        book.borrower = borrower
         puts borrower.name + " has checked out " + book.title + "."
         return borrower
       end
